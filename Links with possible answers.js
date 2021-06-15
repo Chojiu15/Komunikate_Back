@@ -47,3 +47,19 @@ const personSchema = Schema({
 
 const Event = mongoose.model('Event', eventSchema);
 const Person = mongoose.model('Person', personSchema);
+
+/////////////////////////////////////////////
+
+
+authRouter.post('/login', async (req, res) => {
+  const user = await User.findOne({ email: req.body.email })
+  if (!user) return res.status(400).send('Email not found')
+
+  const comparePassword = await bcrypt.compare(req.body.password, user.password)
+  if (!comparePassword) return res.status(400).send('Wrong password')
+
+  //////////////////  ({ payload, secret.ENV})
+  const token = jwt.sign({ user: user._id }, process.env.SECRET)
+  res.header('auth-token', token)
+  res.json(token)
+})

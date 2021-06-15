@@ -12,17 +12,22 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(express.json());
 
+// These models need to be required here in order for populate method to work correctly
+require("./models/Messages")
+require("./models/Comments")
+/* require("./models/Articles") */
+
 // Router declarations
 const authRouter = require("./routes/authRouter");
 const userRouter = require("./routes/userRouter");
 const messageRouter = require("./routes/messageRouter");
-const commentsRouter = require("./routes/commentsRouter");
+const articleRouter = require("./routes/articleRouter");
 
 // Router setup
 app.use("/", authRouter);
 app.use("/users", userRouter);
 app.use("/messages", messageRouter);
-app.use("/comments", commentsRouter);
+app.use("/article", articleRouter);
 
 // Connect to Database
 mongoose.connect(process.env.MONGO_DB, {

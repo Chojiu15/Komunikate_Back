@@ -1,6 +1,9 @@
 const mongoose = require("mongoose");
 require("mongoose-type-email");
 const Schema = mongoose.Schema;
+/* const Messages = require("./Messages")
+const Comments = require("./Comments")
+const Articles = require("./Articles") */
 
 const User = new Schema({
     first_name: {
@@ -43,26 +46,33 @@ const User = new Schema({
         required: true,
     },
     // https://stackoverflow.com/questions/34023169/how-to-define-a-boolean-field-in-mongodb-bson-document
-    user_role_seeker: {
-        type: Boolean,
-        default: true,
+    user_role: {
+        type: String,
+        enum: ["Seeker", "Mentor"],
+        default: "Seeker",
         required: true,
     },
 
-    user_role_mentor: {
-        type: Boolean,
-        default: false,
-        required: true,
-    },
+    /*     user_role_seeker: {
+            type: Boolean,
+            default: true,
+            required: true,
+        },
+    
+        user_role_mentor: {
+            type: Boolean,
+            default: false,
+            required: true,
+        }, */
 
-    user_role_admin: {
+    admin: {
         type: Boolean,
         default: false,
         required: true,
     },
 
     languages: {
-        type: [{ language: String }],
+        type: [String],
         required: true,
         trim: true,
     },
@@ -99,17 +109,17 @@ const User = new Schema({
     },
 
     profession: {
-        type: [{ profession: String }],
+        type: [String],
         trim: true,
     },
 
     interests: {
-        type: [{ interest: String }],
+        type: [String],
         trim: true,
     },
 
     nationality: {
-        type: [{ nationality: String }],
+        type: [String],
         required: true,
         trim: true,
     },
@@ -118,6 +128,20 @@ const User = new Schema({
         type: String,
     },
 
+    userMessages: [{
+        type: Schema.Types.ObjectId,
+        ref: "Messages"
+    }],
+
+    userComments: [{
+        type: Schema.Types.ObjectId,
+        ref: "Comments"
+    }],
+
+    userArticles: [{
+        type: Schema.Types.ObjectId,
+        ref: "Articles"
+    }]
 });
 
 module.exports = mongoose.model("User", User);

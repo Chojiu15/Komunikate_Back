@@ -32,6 +32,10 @@ const Articles = new Schema({
     type: Schema.Types.ObjectId,
     required: true,
   },
+  userComments: [{
+    type: Schema.Types.ObjectId,
+    ref: "Comments"
+  }],
 });
 
 module.exports = mongoose.model("Articles", Articles);
