@@ -1,0 +1,46 @@
+Post > localhost:3002/users/register > Body > raw
+
+
+////////////////////////////////////////////////////////////////////////////////
+User 2 - Max Mustermann
+////////////////////////////////////////////////////////////////////////////////
+
+{
+      "first_name": "Max",
+      "last_name": "Mustermann",
+      "username": "max_muster",
+      "password": "2021wbs",
+      "email": "max_mustermann@gmail.com",
+      "user_role": "Mentor",
+      "admin": false,
+      "language": "German",
+      "living_in_germany": true,
+      "nationality": "French"
+}
+
+authToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuZXdVc2VyIjoiNjBjOWU5YTAyODkxM2MwNTc4NzI0MTdmIiwiaWF0IjoxNjIzODQ1MjgwfQ.BDZLWULqhlTLNS0v8Mvo7G_pXUOXykltCVmTw0qv2jE
+
+UUID: 60c9e9a028913c057872417f
+
+////////////////////////////////////////////////////////////////////////////////
+User 1 - John Doe
+////////////////////////////////////////////////////////////////////////////////
+
+{
+      "first_name": "John",
+      "last_name": "Doe",
+      "username": "john_doe",
+      "password": "wbs2021",
+      "email": "johndoe@gmail.com",
+      "user_role": "Seeker",
+      "admin": false,
+      "language": "English",
+      "living_in_germany": true,
+      "nationality": "American"
+	
+    }
+
+authToken:
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuZXdVc2VyIjoiNjBjOGIwYTFjZDNjMzA0MzJjYjc0ZmFlIiwiaWF0IjoxNjIzNzY1MTUzfQ.2MzgFhT_9DBo2Nrda7iJYlKf3irhOjCx_OuLS2AjYWY
+
+ObjectId: 60c8b0a1cd3c30432cb74fae

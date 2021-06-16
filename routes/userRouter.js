@@ -1,16 +1,21 @@
 const userRouter = require("express").Router();
 const User = require("../models/User");
 const Message = require("../models/Messages");
-const verifyToken = require("./verifyToken");
+const verifyToken = require("../middlewares/verifyToken");
+const verifyAdminToken = require("../middlewares/verifyAdminToken");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
-userRouter.get("/", async (req, res) => {
+userRouter.get("/", verifyAdminToken, async (req, res) => {
+  // pass back a VerifyAdminToken where we can check if role of the token is an admin
+  // If true, then display list of all users
+  // Use jwt-decode. If false, then deny access
   const allUsers = await User.find({});
   if (!allUsers) {
     return res.status(400).send("Error getting users");
   }
   res.json({ allUsers });
+  
 });
 
 userRouter.get("/:id", verifyToken, async (req, res) => {

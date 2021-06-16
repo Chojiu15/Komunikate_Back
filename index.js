@@ -15,6 +15,8 @@ app.use(express.json());
 // These models need to be required here in order for populate method to work correctly
 require("./models/Messages")
 require("./models/Comments")
+
+// this Articles model require causes get to fail
 /* require("./models/Articles") */
 
 // Router declarations

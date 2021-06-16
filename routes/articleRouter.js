@@ -1,6 +1,6 @@
 const articleRouter = require("express").Router();
 const Articles = require("../models/articles");
-const verifyToken = require("./verifyToken");
+const verifyToken = require("../middlewares/verifyToken");
 
 articleRouter.get("/", verifyToken, async (req, res) => {
     const allarticles = await Articles.find({});

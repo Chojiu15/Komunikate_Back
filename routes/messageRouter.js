@@ -1,6 +1,6 @@
 const messageRouter = require("express").Router();
 const Message = require("../models/Messages");
-const verifyToken = require("./verifyToken");
+const verifyToken = require("../middlewares/verifyToken");
 
 messageRouter.get("/", verifyToken, async (req, res) => {
     const allMessages = await Message.find({});
