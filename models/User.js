@@ -26,6 +26,7 @@ const User = new Schema({
         required: true,
         minLength: 2,
         maxLength: 32,
+        unique: true  //username should be unique
     },
     password: {
         type: String,
@@ -44,6 +45,7 @@ const User = new Schema({
         lowercase: true,
         trim: true,
         required: true,
+        unique: true //email should be unique
     },
     // https://stackoverflow.com/questions/34023169/how-to-define-a-boolean-field-in-mongodb-bson-document
     user_role: {
@@ -90,7 +92,7 @@ const User = new Schema({
         maxLength: 32,
     },
 
-    years_in_germany: {
+    to_germany_year: {  //changed this to make it clear what we store
         type: Number,
         minLength: 4,
         maxLength: 4,
@@ -126,6 +128,16 @@ const User = new Schema({
 
     userBio: {
         type: String,
+    },
+
+    online: { //this one added for keeping track  of whether the user is logged in and online. do it automatically on login and then let the user decide on the front end whether to display the status or not
+        type: Boolean,
+        default: false
+    },
+
+    chat_available: { //perhaps this is not needed if we decide that the online status indicates that someone is up for a chat
+        type: Boolean,
+        default: false
     },
 
     userMessages: [{

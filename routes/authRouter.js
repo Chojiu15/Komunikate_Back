@@ -68,4 +68,53 @@ authRouter.post("/login", async (req, res) => {
   res.json(token);
 });
 
+//Update user profile
+//User has to be logged in to change profile data
+//User can only change her own profile/user data
+authRouter.put('update/:id', verifyToken, async (req, res,) => {
+  //Check if the user sending the request belongs to the profile
+  if (req.verified.use._id !== req.params.id) {
+    return res.status(400).send('User profile request is invalid')
+  }
+
+  //Check if the user wants to change email
+  //If yes, check if the email already exists in db
+  if (req.verified.user.email !== req.params.email) {
+    const newEmail = await User.findOne({ email: req.body.email });
+    if (newEmail) {
+      return res.status(400).send('Email already exists')
+    }
+  }
+
+  //Get the profile to be updated
+  const updateUser = await User.findById(req.params.id)
+  if (!updateUser) {
+    return res.status(400).send('Error getting user')
+  }
+
+  //For changing the password, it has to be hashed
+  const salt = await bcrypt.genSalt(10)
+  const hashPassword = await bcrypt.hash(req.body.password, salt)
+
+  //Set all other data with what we get from the body
+  updateUser.first_name = req.body.first_name
+  updateUser.last_name = req.body.last_name
+  updateUser.username = req.body.username
+  updateUser.password = hashPassword
+  updateUser.email = req.body.email
+  updateUser.user_role = req.body.user_role
+  updateUser.admin = req.body.admin
+  updateUser.languages = req.body.language
+  updateUser.living_in_germany = req.body.living_in_germany
+  updateUser.nationality = req.body.nationality
+
+  let error = updateUser.validateSync()
+  if (error) {
+    return res.status(400).send(error)
+  }
+
+  await updateUser.save()
+  res.status(200).send('User profile update was successful')
+})
+
 module.exports = authRouter;

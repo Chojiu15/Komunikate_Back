@@ -6,6 +6,9 @@ const verifyAdminToken = require("../middlewares/verifyAdminToken");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
+//this has to be modified: we want the user to receive a list of the other users and being able to display their profiles
+//only the admin will be able to get a list of the all the users and ALL of the details (goes into authRouter) 
+//==> two get routes
 userRouter.get("/", verifyAdminToken, async (req, res) => {
   // pass back a VerifyAdminToken where we can check if role of the token is an admin
   // If true, then display list of all users
@@ -15,7 +18,7 @@ userRouter.get("/", verifyAdminToken, async (req, res) => {
     return res.status(400).send("Error getting users");
   }
   res.json({ allUsers });
-  
+
 });
 
 userRouter.get("/:id", verifyToken, async (req, res) => {
