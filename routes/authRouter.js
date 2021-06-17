@@ -83,10 +83,19 @@ authRouter.put('update/:id', verifyToken, async (req, res,) => {
 
   //Check if the user wants to change email
   //If yes, check if the email already exists in db
-  if (req.verified.user.email !== req.params.email) {
+  if (req.verified.user.email !== req.body.email) {
     const newEmail = await User.findOne({ email: req.body.email });
     if (newEmail) {
       return res.status(400).send('Email already exists')
+    }
+  }
+
+  //Check if the user wants to change username
+  //If yes, check if the username already exists in db
+  if (req.verified.user.username !== req.body.username) {
+    const newUsername = await User.findOne({ username: req.body.username });
+    if (newUsername) {
+      return res.status(400).send('Username already exists')
     }
   }
 
@@ -101,6 +110,7 @@ authRouter.put('update/:id', verifyToken, async (req, res,) => {
   const hashPassword = await bcrypt.hash(req.body.password, salt)
 
   //Set all other data with what we get from the body
+  //user cannot change his/her role to admin (do we need some security for this?)
   updateUser.first_name = req.body.first_name
   updateUser.last_name = req.body.last_name
   updateUser.username = req.body.username
@@ -111,6 +121,10 @@ authRouter.put('update/:id', verifyToken, async (req, res,) => {
   updateUser.living_in_germany = req.body.living_in_germany
   updateUser.nationality = req.body.nationality
 
+  if (updateUser.admin === true) {
+    return res.status(400).send('Bad request')
+  }
+
   let error = updateUser.validateSync()
   if (error) {
     return res.status(400).send(error)
@@ -120,10 +134,35 @@ authRouter.put('update/:id', verifyToken, async (req, res,) => {
   res.status(200).send('User profile update was successful')
 })
 
+//Delete user
+//User can only delete herself
+authRouter.delete('/delete/:id', verifyToken, async (req, res) => {
+  //Check if the user sending the request belongs to the profile
+  if (req.verified.use._id !== req.params.id) {
+    return res.status(400).send('User profile request is invalid')
+  }
+
+  //Get the profile to be deleted
+  const getUserToDelete = await User.findById(req.params.id)
+  if (!getUserToDelete) {
+    return res.status(400).send('Error getting user')
+  }
+
+  //finally deleting the user profile
+  const deleteUser = await User.deleteOne({ _id: req.params.id })
+  if (!deleteUser) {
+    return res.status(400).send('Error deleting user')
+  }
+
+  res.status(200).send('Deleting user successful')
+
+
+})
+
 //Delete user by admin
 //from Stavros: admins can delete themselves but not other admins
 //they cannot delete themselves if they are the last admin on the database
-authRouter.delete('/delete/:id', verifyAdminToken, async (req, res) => {
+authRouter.delete('/deleteAdmin/:id', verifyAdminToken, async (req, res) => {
   //get the user profile to delete from db
   const getUserToDelete = await User.findById(req.params.id)
   if (!getUserToDelete) {
