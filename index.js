@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
+const helmet = require("helmet");
 require("dotenv/config");
 const cors = require("cors");
 
@@ -8,6 +9,7 @@ const cors = require("cors");
 const port = process.env.PORT || 3002;
 
 // App setup tools
+app.use(helmet()); //helmet added for more secure header
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(express.json());
