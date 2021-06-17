@@ -20,6 +20,18 @@ authRouter.get("/", async (req, res) => {
   `);
 });
 
+//Admin can get all user info WITHOUT passwords (filtered out in the Schema)
+authRouter.get("/", verifyAdminToken, async (req, res) => {
+  const allUsers = await User.find({});
+  if (!allUsers) {
+    return res.status(400).send("Error getting users");
+  }
+  res.json({ allUsers });
+
+
+});
+
+
 authRouter.post("/register", async (req, res) => {
   const emailExist = await User.findOne({ email: req.body.email });
   if (emailExist) {

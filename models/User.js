@@ -156,6 +156,7 @@ const User = new Schema({
     }]
 });
 
+//Filtering out the password. It will not show up in res.json objects.
 User.methods.toJSON = () => {
     const obj = this.toObject();
     delete obj.password;
