@@ -2,6 +2,8 @@ const authRouter = require("express").Router();
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const verifyToken = require("../middlewares/verifyToken")
+const verifyToken = require("../middlewares/verifyAdminToken")
 
 authRouter.get("/", async (req, res) => {
   res.send(`
@@ -75,7 +77,7 @@ authRouter.post("/login", async (req, res) => {
 //Update user profile
 //User has to be logged in to change profile data
 //User can only change her own profile/user data
-authRouter.put('update/:id', verifyToken, async (req, res,) => {
+authRouter.put('update/:id', verifyToken, async (req, res) => {
   //Check if the user sending the request belongs to the profile
   if (req.verified.use._id !== req.params.id) {
     return res.status(400).send('User profile request is invalid')
