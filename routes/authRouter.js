@@ -48,6 +48,8 @@ authRouter.post("/register", async (req, res) => {
   res.status(200).send("User registration was successful");
 });
 
+
+
 authRouter.post("/login", async (req, res) => {
   const user = await User.findOne({ email: req.body.email });
   if (!user) {
@@ -67,6 +69,8 @@ authRouter.post("/login", async (req, res) => {
   res.header("auth-token", token);
   res.json(token);
 });
+
+
 
 //Update user profile
 //User has to be logged in to change profile data
@@ -103,7 +107,6 @@ authRouter.put('update/:id', verifyToken, async (req, res,) => {
   updateUser.password = hashPassword
   updateUser.email = req.body.email
   updateUser.user_role = req.body.user_role
-  updateUser.admin = req.body.admin
   updateUser.languages = req.body.language
   updateUser.living_in_germany = req.body.living_in_germany
   updateUser.nationality = req.body.nationality
@@ -115,6 +118,42 @@ authRouter.put('update/:id', verifyToken, async (req, res,) => {
 
   await updateUser.save()
   res.status(200).send('User profile update was successful')
+})
+
+//Delete user by admin
+//from Stavros: admins can delete themselves but not other admins
+//they cannot delete themselves if they are the last admin on the database
+authRouter.delete('/delete/:id', verifyAdminToken, async (req, res) => {
+  //get the user profile to delete from db
+  const getUserToDelete = await User.findById(req.params.id)
+  if (!getUserToDelete) {
+    return res.status(400).send('Error getting user')
+  }
+
+  //if user role is admin
+  if (getUserToDelete.admin === true) {
+    //whether user to delete is the same as the user that requests the delete
+    if (getUserToDelete._id === req.verified.user._id) {
+      //check whether she is the last admin on db
+      User.countDocuments({ admin: true }, (err, adminCount) => {
+        if (err || adminCount < 2) {
+          return res.status(400).send('Error deleting user')
+        }
+      })
+    } else {
+      // if user requesting is not the same as user to delete, don't delete
+      return res.status(400).send('Error deleting user')
+    }
+  }
+
+  //finally deleting the user profile
+  const deleteUser = await User.deleteOne({ _id: req.params.id })
+  if (!deleteUser) {
+    return res.status(400).send('Error deleting user')
+  }
+
+  res.status(200).send('Deleting user successful')
+
 })
 
 module.exports = authRouter;
