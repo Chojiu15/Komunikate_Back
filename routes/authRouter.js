@@ -3,7 +3,7 @@ const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const verifyToken = require("../middlewares/verifyToken")
-const verifyToken = require("../middlewares/verifyAdminToken")
+const verifyAdminToken = require("../middlewares/verifyAdminToken")
 
 authRouter.get("/", async (req, res) => {
   res.send(`
