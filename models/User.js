@@ -135,11 +135,6 @@ const User = new Schema({
         default: false
     },
 
-    chat_available: { //perhaps this is not needed if we decide that the online status indicates that someone is up for a chat
-        type: Boolean,
-        default: false
-    },
-
     userMessages: [{
         type: Schema.Types.ObjectId,
         ref: "Messages"
@@ -157,7 +152,7 @@ const User = new Schema({
 });
 
 //Filtering out the password. It will not show up in res.json objects.
-User.methods.toJSON = () => {
+User.methods.toJSON = function () {
     const obj = this.toObject();
     delete obj.password;
     return obj;

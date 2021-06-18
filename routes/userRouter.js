@@ -2,22 +2,23 @@ const userRouter = require("express").Router();
 const User = require("../models/User");
 const Message = require("../models/Messages");
 const verifyToken = require("../middlewares/verifyToken");
-const verifyAdminToken = require("../middlewares/verifyAdminToken");
+//const verifyAdminToken = require("../middlewares/verifyAdminToken");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
-//this has to be modified: we want the user to receive a list of the other users and being able to display their profiles
-//only the admin will be able to get a list of the all the users and ALL of the details (goes into authRouter) 
-//==> two get routes
-userRouter.get("/", verifyAdminToken, async (req, res) => {
-  // pass back a VerifyAdminToken where we can check if role of the token is an admin
-  // If true, then display list of all users
-  // Use jwt-decode. If false, then deny access
-  const allUsers = await User.find({});
-  if (!allUsers) {
-    return res.status(400).send("Error getting users");
+//Route for logged-in users getting the information of other users, includes handling query-strings.
+userRouter.get("/", verifyToken, async (req, res) => {
+  //spread operator giving a clone of the query object; assigning to a variable does not suffice, because js passes by reference
+  const queryObj = { ...req.query };
+  //cutting pagination queries
+  const excludedFields = ['page', 'sort', 'limit', 'fields'];
+  excludedFields.forEach(el => delete queryObj[el]);
+
+  const users = await User.find(queryObj).select('-first_name -last_name -email -admin -userMessages -userComments -userArticles');
+  if (!users) {
+    return res.status(400).send("Error getting users or no results in database for this query");
   }
-  res.json({ allUsers });
+  res.json({ users });
 
 });
 
@@ -58,7 +59,7 @@ userRouter.post("/register", async (req, res) => {
       admin: req.body.admin,
       languages: req.body.language,
       living_in_germany: req.body.living_in_germany,
-      nationality: req.body.nationality,
+      nationality: req.body.nationality
     })
     const token = jwt.sign({ newUser: newUser._id }, process.env.SECRET)
     res.header('auth-token', token)
