@@ -14,7 +14,7 @@ userRouter.get("/", verifyToken, async (req, res) => {
   const excludedFields = ['page', 'sort', 'limit', 'fields'];
   excludedFields.forEach(el => delete queryObj[el]);
 
-  const users = await User.find(queryObj).select('-first_name -last_name -email -admin -userMessages -userComments -userArticles');
+  const users = await User.find(queryObj).select('-first_name -last_name -email -admin -userMessages -userComments');
   if (!users) {
     return res.status(400).send("Error getting users or no results in database for this query");
   }
@@ -22,6 +22,8 @@ userRouter.get("/", verifyToken, async (req, res) => {
 
 });
 
+
+//here, specific information (like admin-role and password) will also have to be excluded
 userRouter.get("/:id", verifyToken, async (req, res) => {
   try {
 
@@ -42,6 +44,7 @@ userRouter.get("/:id", verifyToken, async (req, res) => {
 });
 
 // create userRouter.post to create authtoken that will be sent back in response
+//don't we have that in the authrouter?
 
 userRouter.post("/register", async (req, res) => {
   try {

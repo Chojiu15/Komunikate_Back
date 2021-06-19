@@ -30,38 +30,6 @@ authRouter.get("/", verifyAdminToken, async (req, res) => {
 });
 
 
-// authRouter.post("/register", async (req, res) => { //is this copied from Stavros? new User data cannot be right
-//   const emailExist = await User.findOne({ email: req.body.email });
-//   if (emailExist) {
-//     return res.status(400).send("Email already exist");
-//   }
-
-//   const user = new User({
-//     name: req.body.name,
-//     email: req.body.email,
-//     password: req.body.password,
-//   });
-
-//   let error = user.validateSync();
-//   if (error) {
-//     return res.status(400).send(error);
-//   }
-
-//   const salt = await bcrypt.genSalt(10);
-//   const hashPassword = await bcrypt.hash(req.body.password, salt);
-
-//   user.password = hashPassword;
-//   error = user.validateSync();
-//   if (error) {
-//     return res.status(400).send(error);
-//   }
-
-//   await user.save();
-//   res.status(200).send("User registration was successful");
-// });
-
-
-
 authRouter.post("/login", async (req, res) => {
   const user = await User.findOne({ email: req.body.email });
   if (!user) {
