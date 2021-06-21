@@ -148,8 +148,13 @@ const User = new Schema({
     userArticles: [{
         type: Schema.Types.ObjectId,
         ref: "Articles"
-    }]
-});
+    }],
+
+},
+    { timestamps: true }
+);
+
+//timestamps for users
 
 //Filtering out the password. It will not show up in res.json objects.
 User.methods.toJSON = function () {

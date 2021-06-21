@@ -14,7 +14,7 @@ userRouter.get("/", verifyToken, async (req, res) => {
   const excludedFields = ['page', 'sort', 'limit', 'fields'];
   excludedFields.forEach(el => delete queryObj[el]);
 
-  const users = await User.find(queryObj).select('-first_name -last_name -email -admin -userMessages -userComments');
+  const users = await User.find(queryObj).select('-first_name -last_name -email -admin -userMessages'); 
   if (!users) {
     return res.status(400).send("Error getting users or no results in database for this query");
   }
@@ -24,6 +24,7 @@ userRouter.get("/", verifyToken, async (req, res) => {
 
 
 //here, specific information (like admin-role and password) will also have to be excluded
+//check out how this is linked to articles and comments
 userRouter.get("/:id", verifyToken, async (req, res) => {
   try {
 

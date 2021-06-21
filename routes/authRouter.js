@@ -141,7 +141,7 @@ authRouter.delete('/delete/:id', verifyToken, async (req, res) => {
 
 //Delete user by admin
 //from Stavros: admins can delete themselves but not other admins
-//they cannot delete themselves if they are the last admin on the database
+//they cannot delete themselves if they are not the last admin on the database
 authRouter.delete('/deleteAdmin/:id', verifyAdminToken, async (req, res) => {
   //get the user profile to delete from db
   const getUserToDelete = await User.findById(req.params.id)
