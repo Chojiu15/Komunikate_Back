@@ -12,10 +12,25 @@ const Articles = new Schema({
     trim: true,
     minLength: 8,
   },
+  teaserText: {
+    type: String,
+    trim: true,
+    minLength: 8,
+  },
   body: {
     type: String,
     trim: true,
     required: true,
+  },
+  body2: {
+    type: String,
+    trim: true,
+    required: false,
+  },
+  body3: {
+    type: String,
+    trim: true,
+    required: false,
   },
   // Buffer to Base64 info:
   // https://stackoverflow.com/questions/37077712/store-image-file-in-binary-data-in-mongoose-schema-and-display-image-in-html-for/37091088
@@ -30,7 +45,7 @@ const Articles = new Schema({
   },
   id_user: {
     type: Schema.Types.ObjectId,
-    required: true,
+    required: false,
   },
   userComments: [{
     type: Schema.Types.ObjectId,

@@ -1,9 +1,9 @@
 const articleRouter = require("express").Router();
-const Articles = require("../models/Articles");
+const Article = require("../models/Articles");
 const verifyToken = require("../middlewares/verifyToken");
 
 articleRouter.get("/", verifyToken, async (req, res) => {
-    const allarticles = await Articles.find({});
+    const allarticles = await Article.find({});
     if (!allarticles) {
         return res.status(400).send("Error getting articles");
     }
@@ -11,7 +11,7 @@ articleRouter.get("/", verifyToken, async (req, res) => {
 });
 
 articleRouter.get("/:id", verifyToken, async (req, res) => {
-    const getarticle = await Articles.findById(req.params.id)
+    const getarticle = await Article.findById(req.params.id)
         .populate("userComments");
     if (!getarticle) {
         return res.status(400).send("Error getting article");
@@ -21,16 +21,23 @@ articleRouter.get("/:id", verifyToken, async (req, res) => {
 
 articleRouter.post("/", verifyToken, async (req, res) => {
     const article = new Article({
-        text: req.body.text,
-        id_user: req.verified.user._id,
-    });
+        title: req.body.title,
+        subtitle: req.body.subtitle,
+        username: req.body.username,
+        teaserText: req.body.teaserText,
+        body: req.body.body,
+        body2: req.body.body2,
+        body3: req.body.body3,
+        article_image: req.body.article_image,
+        id_user: req.body.id_user,
+        });
 
-    let error = Article.validateSync();
+    let error = article.validateSync();
     if (error) {
         return res.status(400).send(error);
     }
 
-    await Article.save();
+    await article.save();
     res.status(200).send("article created successfully");
 });
 

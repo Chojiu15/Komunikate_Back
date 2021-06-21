@@ -7,7 +7,7 @@ const verifyAdminToken = require("../middlewares/verifyAdminToken")
 
 authRouter.get("/", async (req, res) => {
   res.send(`
-  Instructions:
+  Instructions:</br>
   User registration: /register
   User login: /login
   Get all users: /users

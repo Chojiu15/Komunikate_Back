@@ -64,7 +64,7 @@ userRouter.post("/register", async (req, res) => {
     const token = jwt.sign({ newUser: newUser._id }, process.env.SECRET)
     res.header('auth-token', token)
     res.json("User Registration was successful")
-
+/*     res.redirect('/login') */
 
   } catch (error) {
     console.log(error)
