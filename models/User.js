@@ -5,6 +5,11 @@ const Schema = mongoose.Schema;
 const Comments = require("./Comments")
 const Articles = require("./Articles") */
 
+// The following three lines helps get rid of the Deprecation Warning: collection.ensureIndex - which is related to mongoose
+mongoose.set('useNewUrlParser', true);
+mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
+
 const User = new Schema({
     first_name: {
         type: String,
