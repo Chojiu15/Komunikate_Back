@@ -6,8 +6,13 @@ const verifyToken = require("../middlewares/verifyToken")
 const verifyAdminToken = require("../middlewares/verifyAdminToken")
 
 authRouter.get("/", async (req, res) => {
-  res.send(`
-  Instructions:
+  res.format({
+    html: function () {
+      res.send('<h2>Instructions:</h2><ul><p>User registration: <b>/register</b></p><p>User login: <b>/login</b></p><p>Get all users: <b>/users</b></p><p>Get a single user by id: <b>/users/id</b></p><p>Post an article: <b>/article</b></p><p>Get all messages: <b>/messages</b></p><p>Get a single message by id: <b>/messages/id</b></p><p>Get all messages by user: <b>users/id/messages</b></p><p>Create a new message: <b>/messages</b></p></ul>');
+    },
+  })
+ /*  res.send(`
+  Instructions:</br>
   User registration: /register
   User login: /login
   Get all users: /users
@@ -17,7 +22,7 @@ authRouter.get("/", async (req, res) => {
   Get all messages by user: users/id/messages
   Get all comments by 
   Create a new message: /messages
-  `);
+  `); */
 });
 
 //Admin can get all user info WITHOUT passwords (filtered out in the Schema)
