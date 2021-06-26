@@ -19,7 +19,7 @@ articleRouter.get("/:id", verifyToken, async (req, res) => {
     res.json({ getarticle });
 });
 
-articleRouter.post("/", verifyToken, async (req, res) => {
+articleRouter.post("/", /* verifyToken, */ async (req, res) => {
     const article = new Article({
         title: req.body.title,
         subtitle: req.body.subtitle,

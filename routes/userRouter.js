@@ -7,24 +7,25 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
 //Route for logged-in users getting the information of other users, includes handling query-strings.
-userRouter.get("/", verifyToken, async (req, res) => {
+userRouter.get("/", /* verifyToken, */ async (req, res) => {
   //spread operator giving a clone of the query object; assigning to a variable does not suffice, because js passes by reference
   const queryObj = { ...req.query };
   //cutting pagination queries
   const excludedFields = ['page', 'sort', 'limit', 'fields'];
   excludedFields.forEach(el => delete queryObj[el]);
 
-  const users = await User.find(queryObj).select('-first_name -last_name -email -admin -userMessages'); 
+  // Line directly below is the version of the get route that filters out the selected fields.
+  /* const users = await User.find(queryObj).select('-first_name -last_name -email -admin -userMessages -userComments -userArticles'); */
+  // 
+  const users = await User.find(queryObj).select('-userComments -userArticles');
   if (!users) {
     return res.status(400).send("Error getting users or no results in database for this query");
   }
+  res.set("Content-Range", users.length)
   res.json({ users });
 
 });
 
-
-//here, specific information (like admin-role and password) will also have to be excluded
-//check out how this is linked to articles and comments
 userRouter.get("/:id", verifyToken, async (req, res) => {
   try {
 
@@ -45,7 +46,6 @@ userRouter.get("/:id", verifyToken, async (req, res) => {
 });
 
 // create userRouter.post to create authtoken that will be sent back in response
-//don't we have that in the authrouter?
 
 userRouter.post("/register", async (req, res) => {
   try {
@@ -61,18 +61,18 @@ userRouter.post("/register", async (req, res) => {
       email: req.body.email,
       user_role: req.body.user_role,
       admin: req.body.admin,
-      languages: req.body.language,
+      languages: req.body.languages,
       living_in_germany: req.body.living_in_germany,
       nationality: req.body.nationality
     })
     const token = jwt.sign({ newUser: newUser._id }, process.env.SECRET)
     res.header('auth-token', token)
-    res.json("User Registration was successful")
-/*     res.redirect('/login') */
+    res.json("User Registration was successful!")
+    res.redirect('../login')
 
   } catch (error) {
     console.log(error)
-    res.status(500).send("Error creating a new user account")
+    res.status(500).send("Username or E-mail have already been registered.")
   }
 
 

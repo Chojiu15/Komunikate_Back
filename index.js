@@ -12,13 +12,19 @@ const port = process.env.PORT || 3002;
 app.use(helmet()); //helmet added for more secure header
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*")
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
+  res.header('Access-Control-Expose-Headers', 'Content-Range')
+  next()
+})
 app.use(express.json());
 
 // These models need to be required here in order for populate method to work correctly
 require("./models/Messages")
 require("./models/Comments")
 
-// this Articles model require causes get to fail
+// this Articles model require causes .get to fail
 /* require("./models/Articles") */
 
 // Router declarations

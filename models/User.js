@@ -102,8 +102,10 @@ const User = new Schema({
         minLength: 4,
         maxLength: 4,
     },
-
-    student: {
+//
+// Removed the student - worker fields and exchanged with 'working_role'
+//
+/*     student: {
         type: Boolean,
         default: true,
         required: false
@@ -113,6 +115,14 @@ const User = new Schema({
         type: Boolean,
         default: false,
         required: false
+    }, */
+//
+
+    working_role: {
+        type: String,
+        enum: ["Working", "Studying"],
+        default: "Working",
+        required: false,
     },
 
     profession: {
