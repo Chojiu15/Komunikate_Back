@@ -26,7 +26,7 @@ userRouter.get("/", /* verifyToken, */ async (req, res) => {
 
 });
 
-userRouter.get("/:id", verifyToken, async (req, res) => {
+userRouter.get("/:id", /* verifyToken, */ async (req, res) => {
   try {
 
     const getUser = await User.findById(req.params.id)
@@ -45,6 +45,39 @@ userRouter.get("/:id", verifyToken, async (req, res) => {
 
 });
 
+// Edit a single user
+userRouter.put("/:id", /* verifyToken, */ async (req, res) => {
+
+});
+
+// Delete a single user
+userRouter.delete("/:id", /* verifyToken, */ async (req, res) => {
+  User
+  .deleteOne({ _id : req.params.id})
+  .then(() => res.json('One row was deleted'))
+  .catch((err) => res.json(err))
+});
+
+/* studentRouter.put('/api/students/:id', (req, res) => {
+  Student
+  .updateOne({_id : req.params.id}, {$set : req.body })
+  .then((student) => res.json(student))
+  .catch((err) => res.json(err));
+})
+
+studentRouter.delete('/api/students/:id', (req, res) => {
+    Student
+    .deleteOne({ _id : req.params.id})
+    .then(() => res.json('One row was deleted'))
+    .catch((err) => res.json(err))
+})
+
+
+
+
+*/
+
+
 // create userRouter.post to create authtoken that will be sent back in response
 
 userRouter.post("/register", async (req, res) => {
@@ -58,11 +91,11 @@ userRouter.post("/register", async (req, res) => {
       last_name: req.body.last_name,
       username: req.body.username,
       password: hashPassword,
-      email: req.body.email,
-      user_role: req.body.user_role,
-      admin: req.body.admin,
-      languages: req.body.languages,
-      living_in_germany: req.body.living_in_germany,
+      email: req.body.email, // unique
+      user_role: req.body.user_role, // "Mentor" or "Seeker"
+      admin: req.body.admin, // Boolean
+      languages: req.body.languages, // String
+      living_in_germany: req.body.living_in_germany, // Boolean
       nationality: req.body.nationality
     })
     const token = jwt.sign({ newUser: newUser._id }, process.env.SECRET)
@@ -71,8 +104,8 @@ userRouter.post("/register", async (req, res) => {
     res.redirect('../login')
 
   } catch (error) {
-    console.log(error)
-    res.status(500).send("Username or E-mail have already been registered.")
+    console.error(error)
+    res.status(500).send(error)
   }
 
 
