@@ -2,7 +2,7 @@ const articleRouter = require("express").Router();
 const Article = require("../models/Articles");
 const verifyToken = require("../middlewares/verifyToken");
 
-articleRouter.get("/", verifyToken, async (req, res) => {
+articleRouter.get("/", async (req, res) => {
     const allarticles = await Article.find({});
     if (!allarticles) {
         return res.status(400).send("Error getting articles");

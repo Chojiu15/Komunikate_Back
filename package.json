@@ -18,7 +18,8 @@
     "helmet": "^4.6.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.12.13",
-    "mongoose-type-email": "^1.1.2"
+    "mongoose-type-email": "^1.1.2",
+    "ra-expressjs-mongodb-scaffold": "^1.0.0"
   },
   "engines": {
     "node": "16.1"

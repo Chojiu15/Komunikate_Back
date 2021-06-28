@@ -3,7 +3,10 @@ const app = express();
 const mongoose = require("mongoose");
 const helmet = require("helmet");
 require("dotenv/config");
+
 const cors = require("cors");
+const { createAdminCRUD } = require("ra-expressjs-mongodb-scaffold"); // import the library
+
 
 // Connection port
 const port = process.env.PORT || 3002;
@@ -46,3 +49,19 @@ mongoose.connect(process.env.MONGO_DB, {
 });
 
 app.listen(port, console.log(`Server connected at port ${port}`));
+
+// mongoose.connect(process.env.MONGO_DB,{
+//   useFindAndModify: false,
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true
+// })
+//   .then(async _ => {
+//       const app = express();
+//       // app.use("/",createAdminCRUD()); // plug it in just like any other middleware
+
+//       app.listen(port,() => {
+//           console.log(`Server started at port: ${port}`)
+//       })
+
+//   })
+//   .catch(console.error);
