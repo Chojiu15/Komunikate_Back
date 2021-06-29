@@ -40,7 +40,7 @@ const articleRouter = require("./routes/articleRouter");
 app.use("/", authRouter);
 app.use("/users", userRouter);
 app.use("/messages", messageRouter);
-app.use("/article", articleRouter);
+app.use("/posts", articleRouter);
 
 // Connect to Database
 mongoose.connect(process.env.MONGO_DB, {

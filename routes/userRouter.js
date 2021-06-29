@@ -46,9 +46,14 @@ userRouter.get("/:id", /* verifyToken, */ async (req, res) => {
 });
 
 // Edit a single user
-userRouter.put("/:id", /* verifyToken, */ async (req, res) => {
+userRouter.put("/:id", /*verifyToken, */ async (req, res) => {
+    User
+      .updateOne({ _id: req.params.id }, { $set: req.body })
+      .then((user) => res.json(user))
+      .catch((err) => res.json(err));
+  }
+);
 
-});
 
 // Delete a single user
 userRouter.delete("/:id", /* verifyToken, */ async (req, res) => {
@@ -58,24 +63,6 @@ userRouter.delete("/:id", /* verifyToken, */ async (req, res) => {
   .catch((err) => res.json(err))
 });
 
-/* studentRouter.put('/api/students/:id', (req, res) => {
-  Student
-  .updateOne({_id : req.params.id}, {$set : req.body })
-  .then((student) => res.json(student))
-  .catch((err) => res.json(err));
-})
-
-studentRouter.delete('/api/students/:id', (req, res) => {
-    Student
-    .deleteOne({ _id : req.params.id})
-    .then(() => res.json('One row was deleted'))
-    .catch((err) => res.json(err))
-})
-
-
-
-
-*/
 
 
 // create userRouter.post to create authtoken that will be sent back in response
