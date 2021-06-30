@@ -58,10 +58,11 @@ articleRouter.post(
       // username: req.body.username,
       //    teaserText: req.body.teaserText,
       body: req.body.body,
-      // body2: req.body.body2,
-      /*         body3: req.body.body3,
-        article_image: req.body.article_image,
-        id_user: req.body.id_user, */
+      body2: req.body.body2,
+      body3: req.body.body3,
+      article_image: req.body.article_image,
+      categories: req.body.categories,
+      id_user: req.body.id_user,
     });
 
     let error = article.validateSync();

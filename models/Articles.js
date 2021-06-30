@@ -39,6 +39,13 @@ const Articles = new Schema({
     data: Buffer,
     contentType: String
   },
+
+  categories: {
+    type: [String],
+    required: false,
+    trim: true,
+},
+
   date: {
     type: Date,
     default: Date.now,
