@@ -2,9 +2,10 @@ const articleRouter = require("express").Router();
 const Article = require("../models/Articles");
 const verifyToken = require("../middlewares/verifyToken");
 const { updateOne } = require("../models/Articles");
+const { request } = require("express");
 
 articleRouter.get(
-  "/", verifyToken, async (req, res) => {
+  "/", async (req, res) => {
     const allarticles = await Article.find({});
     if (!allarticles) {
       return res.status(400).send("Error getting articles");
@@ -14,7 +15,19 @@ articleRouter.get(
 );
 
 articleRouter.get(
-  "/:id", verifyToken, async (req, res) => {
+  "/search", async (req, res) => {
+    const searchRequest = req.query
+    console.log(req.query)
+    const searchedArticles = await Article.find({$text: { $search: searchRequest.searchtext}});
+    if (!searchedArticles) {
+      return res.status(400).send("Sorry, no articles found :(");
+    }
+    res.json({ searchedArticles });
+  }
+);
+
+articleRouter.get(
+  "/:id", async (req, res) => {
     const getarticle = await Article.findById(req.params.id).populate(
       "userComments"
     );
