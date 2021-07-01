@@ -60,4 +60,6 @@ const Articles = new Schema({
   }],
 });
 
+Articles.createIndex({title: "text", subtitle: "text", teaserText: "text", body: "text", body2: "text", body3: "text", categories: "text"})
+
 module.exports = mongoose.model("Articles", Articles);
