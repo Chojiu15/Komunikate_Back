@@ -7,7 +7,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
 //Route for logged-in users getting the information of other users, includes handling query-strings.
-userRouter.get("/", /* verifyToken, */ async (req, res) => {
+userRouter.get("/", verifyToken, async (req, res) => {
   //spread operator giving a clone of the query object; assigning to a variable does not suffice, because js passes by reference
   const queryObj = { ...req.query };
   //cutting pagination queries
@@ -26,7 +26,7 @@ userRouter.get("/", /* verifyToken, */ async (req, res) => {
 
 });
 
-userRouter.get("/:id", /* verifyToken, */ async (req, res) => {
+userRouter.get("/:id", verifyToken, async (req, res) => {
   try {
 
     const getUser = await User.findById(req.params.id)
@@ -46,7 +46,7 @@ userRouter.get("/:id", /* verifyToken, */ async (req, res) => {
 });
 
 // Edit a single user
-userRouter.put("/:id", /*verifyToken, */ async (req, res) => {
+userRouter.put("/:id", verifyToken, async (req, res) => {
     User
       .updateOne({ _id: req.params.id }, { $set: req.body })
       .then((user) => res.json(user))
@@ -56,7 +56,7 @@ userRouter.put("/:id", /*verifyToken, */ async (req, res) => {
 
 
 // Delete a single user
-userRouter.delete("/:id", /* verifyToken, */ async (req, res) => {
+userRouter.delete("/:id", verifyToken, async (req, res) => {
   User
   .deleteOne({ _id : req.params.id})
   .then(() => res.json('One row was deleted'))
