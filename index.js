@@ -73,7 +73,7 @@ const connect = mongoose.connect(process.env.MONGO_DB, {
   useUnifiedTopology: true,
 });
 
-app.listen(port, console.log(`Server connected at port ${port}`));
+/* app.listen(port, console.log(`Server connected at port ${port}`)); */
 
 // mongoose.connect(process.env.MONGO_DB,{
 //   useFindAndModify: false,
