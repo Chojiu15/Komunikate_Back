@@ -8,11 +8,11 @@ const cors = require("cors");
 const { createAdminCRUD } = require("ra-expressjs-mongodb-scaffold"); // import the library
 
 
-// We create the HTTP server 
+// Create the HTTP server 
 const http = require('http');
 const server = http.createServer(app);
 
-// We create the WebSocket server 
+// Create the WebSocket server 
 const { Server } = require("socket.io");
 const io = new Server(server, {
   cors: {
@@ -80,9 +80,14 @@ const connect = mongoose.connect(process.env.MONGO_DB, {
 
 
 // Code for socket.io
+let connectedUsers = []
+
 io.on('connection', (socket) => {
 const id = socket.handshake.query.id
 socket.join(id)
+connectedUsers.push(id)
+
+socket.emit('user-joined', connectedUsers) //differently!!!
 
 console.log(`${socket.id} connected`)
 
@@ -113,9 +118,6 @@ socket.on('send-message', ({ recipients, text }) => {
       messages: [newMessage]}) 
     }
     })
-  
-
-     
 }) //closing socket
 
 
