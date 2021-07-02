@@ -7,7 +7,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
 //Route for logged-in users getting the information of other users, includes handling query-strings.
-userRouter.get("/", verifyToken, async (req, res) => {
+userRouter.get("/", /* verifyToken, */ async (req, res) => {
   //spread operator giving a clone of the query object; assigning to a variable does not suffice, because js passes by reference
   const queryObj = { ...req.query };
   //cutting pagination queries

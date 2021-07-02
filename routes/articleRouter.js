@@ -4,7 +4,7 @@ const verifyToken = require("../middlewares/verifyToken");
 const { updateOne } = require("../models/Articles");
 
 articleRouter.get(
-  "/", verifyToken, async (req, res) => {
+  "/", /* verifyToken, */ async (req, res) => {
     const allarticles = await Article.find({});
     if (!allarticles) {
       return res.status(400).send("Error getting articles");
