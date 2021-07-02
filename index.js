@@ -73,7 +73,6 @@ const connect = mongoose.connect(process.env.MONGO_DB, {
   useUnifiedTopology: true,
 });
 
-<<<<<<< HEAD
 app.listen(port, console.log(`Server connected at port ${port}`));
 
 // mongoose.connect(process.env.MONGO_DB,{
@@ -91,7 +90,6 @@ app.listen(port, console.log(`Server connected at port ${port}`));
 
 //   })
 //   .catch(console.error);
-=======
 // Code for socket.io
 io.on('connection', (socket) => {
 const id = socket.handshake.query.id
@@ -198,4 +196,3 @@ socket.on("disconnect", () => {
 
 //another port for socket here?
 server.listen(port, console.log(`Server connected at port ${port}`));
->>>>>>> 09edddb0af01c5450964e22f07e8d345e9199143
