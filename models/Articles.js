@@ -54,6 +54,26 @@ const Articles = new Schema({
     type: Schema.Types.ObjectId,
     required: false,
   },
+
+  img1: {
+  type: String,
+  trim: true,
+  required: false,
+},
+
+
+img2: {
+  type: String,
+  trim: true,
+  required: false,
+},
+
+img3: {
+  type: String,
+  trim: true,
+  required: false,
+},
+
   userComments: [{
     type: Schema.Types.ObjectId,
     ref: "Comments"

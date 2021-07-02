@@ -40,7 +40,7 @@ articleRouter.get(
 
 // add put to article router
 articleRouter.put(
-  "/:id", verifyToken, async (req, res) => {
+  "/:id", /* verifyToken, */ async (req, res) => {
     Article.updateOne({ _id: req.params.id }, { $set: req.body })
       .then((post) => res.json(post))
       .catch((err) => res.json(err));
@@ -49,7 +49,7 @@ articleRouter.put(
 
 // add delete
 articleRouter.delete(
-  "/:id", verifyToken, async (req, res) => {
+  "/:id", /* verifyToken, */ async (req, res) => {
     Article.deleteOne({ _id: req.params.id })
       .then(() => res.json("One row was deleted"))
       .catch((err) => res.json(err));
