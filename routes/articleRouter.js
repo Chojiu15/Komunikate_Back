@@ -59,7 +59,7 @@ articleRouter.delete(
 // change values according admin panel
 
 articleRouter.post(
-  "/", verifyToken, async (req, res) => {
+  "/", /* verifyToken, */ async (req, res) => {
     const article = new Article({
       title: req.body.title,
       subtitle: req.body.subtitle,
