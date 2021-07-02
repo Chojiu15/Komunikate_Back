@@ -159,7 +159,6 @@ const User = new Schema({
     { timestamps: true }
 );
 
-//timestamps for users
 
 //Filtering out the password. It will not show up in res.json objects.
 User.methods.toJSON = function () {
