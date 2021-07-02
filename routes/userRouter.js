@@ -5,14 +5,22 @@ const verifyToken = require("../middlewares/verifyToken");
 //const verifyAdminToken = require("../middlewares/verifyAdminToken");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const { query } = require("express");
 
 //Route for logged-in users getting the information of other users, includes handling query-strings.
-userRouter.get("/", /* verifyToken, */ async (req, res) => {
+userRouter.get("/", verifyToken, async (req, res) => {
   //spread operator giving a clone of the query object; assigning to a variable does not suffice, because js passes by reference
   const queryObj = { ...req.query };
   //cutting pagination queries
   const excludedFields = ['page', 'sort', 'limit', 'fields'];
   excludedFields.forEach(el => delete queryObj[el]);
+  //delete empty fields/keys
+  for (const key in queryObj) {              
+    if (queryObj[key] === '') {
+      delete queryObj[key]
+    }
+  }
+  
 
   // Line directly below is the version of the get route that filters out the selected fields.
   /* const users = await User.find(queryObj).select('-first_name -last_name -email -admin -userMessages -userComments -userArticles'); */
