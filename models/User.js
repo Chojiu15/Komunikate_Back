@@ -71,12 +71,7 @@ const User = new Schema({
             default: false,
             required: true,
         }, */
-
-    admin: {
-        type: Boolean,
-        default: false,
-        required: true,
-    },
+    //i deleted the admin thing. can't remember what to do about it, whether string or boolean...
 
     languages: {
         type: [String],
@@ -145,14 +140,9 @@ const User = new Schema({
         type: String,
     },
 
-    online: { //this one added for keeping track  of whether the user is logged in and online. do it automatically on login and then let the user decide on the front end whether to display the status or not
-        type: Boolean,
-        default: false
-    },
-
-    userMessages: [{
+    userConversations: [{           //maybe we don't even need this entry.
         type: Schema.Types.ObjectId,
-        ref: "Messages"
+        ref: "Conversations"
     }],
 
     userComments: [{

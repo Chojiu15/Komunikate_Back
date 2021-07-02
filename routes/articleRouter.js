@@ -2,10 +2,10 @@ const articleRouter = require("express").Router();
 const Article = require("../models/Articles");
 const verifyToken = require("../middlewares/verifyToken");
 const { updateOne } = require("../models/Articles");
+const { request } = require("express");
 
 articleRouter.get(
-  "/",
-  /* verifyToken, */ async (req, res) => {
+  "/", /* verifyToken, */ async (req, res) => {
     const allarticles = await Article.find({});
     if (!allarticles) {
       return res.status(400).send("Error getting articles");
@@ -15,8 +15,19 @@ articleRouter.get(
 );
 
 articleRouter.get(
-  "/:id",
-  /* verifyToken, */ async (req, res) => {
+  "/search", async (req, res) => {
+    const searchRequest = req.query
+    console.log(req.query)
+    const searchedArticles = await Article.find({$text: { $search: searchRequest.searchtext}});
+    if (!searchedArticles) {
+      return res.status(400).send("Sorry, no articles found :(");
+    }
+    res.json({ searchedArticles });
+  }
+);
+
+articleRouter.get(
+  "/:id", async (req, res) => {
     const getarticle = await Article.findById(req.params.id).populate(
       "userComments"
     );
@@ -29,8 +40,7 @@ articleRouter.get(
 
 // add put to article router
 articleRouter.put(
-  "/:id",
-  /*verifyToken, */ async (req, res) => {
+  "/:id", verifyToken, async (req, res) => {
     Article.updateOne({ _id: req.params.id }, { $set: req.body })
       .then((post) => res.json(post))
       .catch((err) => res.json(err));
@@ -39,8 +49,7 @@ articleRouter.put(
 
 // add delete
 articleRouter.delete(
-  "/:id",
-  /* verifyToken, */ async (req, res) => {
+  "/:id", verifyToken, async (req, res) => {
     Article.deleteOne({ _id: req.params.id })
       .then(() => res.json("One row was deleted"))
       .catch((err) => res.json(err));
@@ -50,8 +59,7 @@ articleRouter.delete(
 // change values according admin panel
 
 articleRouter.post(
-  "/",
-  /* verifyToken, */ async (req, res) => {
+  "/", verifyToken, async (req, res) => {
     const article = new Article({
       title: req.body.title,
       subtitle: req.body.subtitle,

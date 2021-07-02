@@ -1,6 +1,6 @@
 const userRouter = require("express").Router();
 const User = require("../models/User");
-const Message = require("../models/Messages");
+const Message = require("../models/Conversation");
 const verifyToken = require("../middlewares/verifyToken");
 //const verifyAdminToken = require("../middlewares/verifyAdminToken");
 const jwt = require("jsonwebtoken");
@@ -26,7 +26,7 @@ userRouter.get("/", /* verifyToken, */ async (req, res) => {
 
 });
 
-userRouter.get("/:id", /* verifyToken, */ async (req, res) => {
+userRouter.get("/:id", verifyToken, async (req, res) => {
   try {
 
     const getUser = await User.findById(req.params.id)
@@ -46,7 +46,7 @@ userRouter.get("/:id", /* verifyToken, */ async (req, res) => {
 });
 
 // Edit a single user
-userRouter.put("/:id", /*verifyToken, */ async (req, res) => {
+userRouter.put("/:id", verifyToken, async (req, res) => {
     User
       .updateOne({ _id: req.params.id }, { $set: req.body })
       .then((user) => res.json(user))
@@ -56,7 +56,7 @@ userRouter.put("/:id", /*verifyToken, */ async (req, res) => {
 
 
 // Delete a single user
-userRouter.delete("/:id", /* verifyToken, */ async (req, res) => {
+userRouter.delete("/:id", verifyToken, async (req, res) => {
   User
   .deleteOne({ _id : req.params.id})
   .then(() => res.json('One row was deleted'))
@@ -78,11 +78,10 @@ userRouter.post("/register", async (req, res) => {
       last_name: req.body.last_name,
       username: req.body.username,
       password: hashPassword,
-      email: req.body.email, // unique
-      user_role: req.body.user_role, // "Mentor" or "Seeker"
-      admin: req.body.admin, // Boolean
-      languages: req.body.languages, // String
-      living_in_germany: req.body.living_in_germany, // Boolean
+      email: req.body.email,
+      user_role: req.body.user_role,
+      languages: req.body.languages,
+      living_in_germany: req.body.living_in_germany,
       nationality: req.body.nationality
     })
     const token = jwt.sign({ newUser: newUser._id }, process.env.SECRET)

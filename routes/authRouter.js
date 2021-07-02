@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 const verifyToken = require("../middlewares/verifyToken")
 const verifyAdminToken = require("../middlewares/verifyAdminToken")
 
+
 authRouter.get("/", async (req, res) => {
   res.format({
     html: function () {
@@ -25,6 +26,8 @@ authRouter.get("/", async (req, res) => {
   `); */
 });
 
+
+//ADMIN get all
 //Admin can get all user info WITHOUT passwords (filtered out in the Schema)
 authRouter.get("/", verifyAdminToken, async (req, res) => {
   const allUsers = await User.find({});
@@ -34,7 +37,7 @@ authRouter.get("/", verifyAdminToken, async (req, res) => {
   res.json({ allUsers });
 });
 
-
+//LOGIN
 authRouter.post("/login", async (req, res) => {
   const user = await User.findOne({ email: req.body.email });
   if (!user) {
@@ -62,7 +65,7 @@ authRouter.post("/login", async (req, res) => {
 //User can only change her own profile/user data
 authRouter.put('update/:id', verifyToken, async (req, res) => {
   //Check if the user sending the request belongs to the profile
-  if (req.verified.use._id !== req.params.id) {
+  if (req.verified.user._id !== req.params.id) {
     return res.status(400).send('User profile request is invalid')
   }
 
