@@ -5,11 +5,7 @@ const { updateOne } = require("../models/Articles");
 const { request } = require("express");
 
 articleRouter.get(
-<<<<<<< HEAD
   "/", /* verifyToken, */ async (req, res) => {
-=======
-  "/", async (req, res) => {
->>>>>>> 907359811d2b5ce5f97f00e7a4d4a3da5c30e19b
     const allarticles = await Article.find({});
     if (!allarticles) {
       return res.status(400).send("Error getting articles");

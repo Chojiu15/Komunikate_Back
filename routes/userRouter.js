@@ -1,6 +1,6 @@
 const userRouter = require("express").Router();
 const User = require("../models/User");
-const Message = require("../models/Messages");
+const Message = require("../models/Conversation");
 const verifyToken = require("../middlewares/verifyToken");
 //const verifyAdminToken = require("../middlewares/verifyAdminToken");
 const jwt = require("jsonwebtoken");
@@ -78,11 +78,10 @@ userRouter.post("/register", async (req, res) => {
       last_name: req.body.last_name,
       username: req.body.username,
       password: hashPassword,
-      email: req.body.email, // unique
-      user_role: req.body.user_role, // "Mentor" or "Seeker"
-      admin: req.body.admin, // Boolean
-      languages: req.body.languages, // String
-      living_in_germany: req.body.living_in_germany, // Boolean
+      email: req.body.email,
+      user_role: req.body.user_role,
+      languages: req.body.languages,
+      living_in_germany: req.body.living_in_germany,
       nationality: req.body.nationality
     })
     const token = jwt.sign({ newUser: newUser._id }, process.env.SECRET)
