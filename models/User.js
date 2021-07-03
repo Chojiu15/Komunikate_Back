@@ -140,11 +140,6 @@ const User = new Schema({
         type: String,
     },
 
-    userConversations: [{           //maybe we don't even need this entry.
-        type: Schema.Types.ObjectId,
-        ref: "Conversations"
-    }],
-
     userComments: [{
         type: Schema.Types.ObjectId,
         ref: "Comments"

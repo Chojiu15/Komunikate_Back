@@ -80,16 +80,14 @@ const connect = mongoose.connect(process.env.MONGO_DB, {
 
 
 // Code for socket.io
-let connectedUsers = []
+
 
 io.on('connection', (socket) => {
 const id = socket.handshake.query.id
 socket.join(id)
-connectedUsers.push(id)
 
-socket.emit('user-joined', connectedUsers) //differently!!!
 
-console.log(`${socket.id} connected`)
+
 
 socket.on('send-message', ({ recipients, text }) => {
   console.log(recipients)
