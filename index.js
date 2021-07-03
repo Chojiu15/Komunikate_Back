@@ -88,7 +88,6 @@ socket.join(id)
 
 
 
-
 socket.on('send-message', ({ recipients, text }) => {
   console.log(recipients)
   const participants = [...recipients, id]
