@@ -74,7 +74,7 @@ const User = new Schema({
     //i deleted the admin thing. can't remember what to do about it, whether string or boolean...
 
     languages: {
-        type: String,
+        type: [String],
         required: true,
         trim: true,
     },
