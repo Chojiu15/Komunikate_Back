@@ -85,6 +85,7 @@ userRouter.post("/register", async (req, res) => {
       languages: req.body.languages,
       living_in_germany: req.body.living_in_germany,
       nationality: req.body.nationality,
+
     });
     const token = jwt.sign({ newUser: newUser._id }, process.env.SECRET);
     res.header("auth-token", token);
