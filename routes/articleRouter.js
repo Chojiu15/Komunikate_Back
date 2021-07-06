@@ -27,6 +27,18 @@ articleRouter.get(
 );
 
 articleRouter.get(
+  "/:category", async (req, res) => {
+    const getCategoryArticle = await Article.find({categories: {'$in': req.params.category}})
+     
+    if (!getCategoryArticle) {
+      return res.status(400).send("Error getting article");
+    }
+    res.json({ getCategoryArticle });
+  }
+);
+
+
+articleRouter.get(
   "/:id", async (req, res) => {
     const getarticle = await Article.findById(req.params.id).populate(
       "userComments"
