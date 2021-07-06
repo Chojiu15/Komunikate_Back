@@ -27,6 +27,7 @@ articleRouter.get("/search", async (req, res) => {
   res.json({ searchedArticles });
 });
 
+<<<<<<< HEAD
 //router for topics in the NavMenu
 articleRouter.get("/categories/:category", async (req, res) => {
   const getCategoryArticle = await Article.find({
@@ -35,6 +36,29 @@ articleRouter.get("/categories/:category", async (req, res) => {
 
   if (!getCategoryArticle) {
     return res.status(400).send("Error getting article");
+=======
+articleRouter.get(
+  "/:category", async (req, res) => {
+    const getCategoryArticle = await Article.find({categories: {'$in': req.params.category}})
+     
+    if (!getCategoryArticle) {
+      return res.status(400).send("Error getting article");
+    }
+    res.json({ getCategoryArticle });
+  }
+);
+
+
+articleRouter.get(
+  "/:id", async (req, res) => {
+    const getarticle = await Article.findById(req.params.id).populate(
+      "userComments"
+    );
+    if (!getarticle) {
+      return res.status(400).send("Error getting article");
+    }
+    res.json({ getarticle });
+>>>>>>> 35e9f6d0add8c44df4f5ad2dfe1a360ab50ee7ed
   }
   res.json({ getCategoryArticle });
 });

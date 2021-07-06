@@ -140,6 +140,7 @@ const User = new Schema({
         type: String,
     },
 
+<<<<<<< HEAD
     userImg: {
         type: String,
     },
@@ -149,6 +150,8 @@ const User = new Schema({
         ref: "Conversations"
     }],
 
+=======
+>>>>>>> 35e9f6d0add8c44df4f5ad2dfe1a360ab50ee7ed
     userComments: [{
         type: Schema.Types.ObjectId,
         ref: "Comments"

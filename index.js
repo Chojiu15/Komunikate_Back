@@ -82,14 +82,46 @@ const connect = mongoose.connect(process.env.MONGO_DB, {
 // Code for socket.io
 let connectedUsers = []
 
+
 io.on('connection', (socket) => {
 const id = socket.handshake.query.id
 socket.join(id)
-connectedUsers.push(id)
+console.log('joined ' + id)
 
-socket.emit('user-joined', connectedUsers) //differently!!!
+// //handling connectedUsers to prevent unexpected disconnections
+// let interval //i don't know >> this should be set once with one setInterval and all users will be pinged
+// const clearUsersAndEmit = (socket) => {
+//   connectedUsers = []
+//   socket.emit('online-check')
+// }
+// if (interval) {
+//   clearInterval(interval);
+// }
+// interval = setInterval(() => clearUsersAndEmit(socket), 6000);
 
-console.log(`${socket.id} connected`)
+
+//handling online users
+
+  if (connectedUsers.includes(id)) {
+    return
+  } else {
+    connectedUsers.push(id)
+    console.log(connectedUsers)
+    io.emit('user-joined', connectedUsers)
+    console.log('emit')
+  }
+              
+
+socket.on('disconnect', () => {
+  const id = socket.handshake.query.id
+  console.log(id)
+  connectedUsers = connectedUsers.filter(el => el !== id)
+  console.log('leaving')
+  console.log(connectedUsers)
+  //clearInterval(interval)
+  socket.broadcast.emit('user-left', connectedUsers)
+})
+
 
 socket.on('send-message', ({ recipients, text }) => {
   console.log(recipients)
@@ -118,13 +150,8 @@ socket.on('send-message', ({ recipients, text }) => {
       messages: [newMessage]}) 
     }
     })
-}) //closing socket
+})
 
-
-//Add console register functions here
-  socket.on("disconnect", () => {
-    console.log(`User disconnected`)
-  })
 
 })
 
