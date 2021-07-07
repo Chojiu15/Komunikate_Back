@@ -35,6 +35,24 @@ userRouter.get("/", /* verifyToken, */ async (req, res) => {
 });
 
 userRouter.get(
+  "/randomUsers",
+  /* verifyToken, */ async (req, res) => {
+    try {
+      const users = await User.aggregate(
+          [ { $sample: { size: 10 } } ]
+        )
+      if (!users) {
+        return res.status(400).send("Error getting user");
+      }
+      res.json({ users });
+    } catch (error) {
+      console.log(error);
+      res.status(500).send("Error fetching user data");
+    }
+  }
+);
+
+userRouter.get(
   "/:id",
   /* verifyToken, */ async (req, res) => {
     try {
