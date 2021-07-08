@@ -106,7 +106,6 @@ userRouter.post("/register", async (req, res) => {
       nationality: req.body.nationality,
 
     });
-    res.redirect("../login");
     res.json("User Registration was successful!");  
   } catch (error) {
     console.error(error);
