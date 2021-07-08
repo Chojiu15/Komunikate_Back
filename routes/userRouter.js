@@ -106,7 +106,6 @@ userRouter.post("/register", async (req, res) => {
       nationality: req.body.nationality,
 
     });
-    const token = jwt.sign({ newUser: newUser._id }, process.env.SECRET);
     res.json("User Registration was successful!");
     res.redirect("../login");
   } catch (error) {
