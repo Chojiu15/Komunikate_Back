@@ -1,0 +1,33 @@
+1) User_ID (auto-generated)
+
+2) *First name
+
+3) *Last Name
+
+4) *Username
+
+4b) Hashed Password
+
+5) User profile image
+
+6) *E-mail
+
+7) *Role (information seeker or mentor)
+7b) Admin Role (Default: False)
+
+8) *Languages Spoken
+
+9) *Living in Germany (Yes or No)
+9b) *If yes, which city in Germany?
+9c) *Number of years living in Germany
+
+10) Destination City (in Germany)
+
+11) Professional / Student
+11b) If Professional, which occupation/field
+
+12) Hobbies / Interests
+
+13) Nationality
+
+14) User submitted Biography text
